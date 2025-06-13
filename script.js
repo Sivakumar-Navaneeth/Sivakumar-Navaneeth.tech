@@ -19,24 +19,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smooth scrolling for navigation links
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
-            e.preventDefault();
             const targetId = item.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
             
-            // Close mobile menu if open
-            if (window.innerWidth <= 768) {
-                navLinks.style.display = 'none';
-                hamburger.classList.remove('active');
+            // Only prevent default and handle smooth scrolling for internal links
+            if (targetId.startsWith('#')) {
+                e.preventDefault();
+                const targetSection = document.querySelector(targetId);
+                
+                // Close mobile menu if open
+                if (window.innerWidth <= 768) {
+                    navLinks.style.display = 'none';
+                    hamburger.classList.remove('active');
+                }
+
+                // Smooth scroll to section
+                targetSection.scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                // Update active link
+                navItems.forEach(link => link.classList.remove('active'));
+                item.classList.add('active');
             }
-
-            // Smooth scroll to section
-            targetSection.scrollIntoView({
-                behavior: 'smooth'
-            });
-
-            // Update active link
-            navItems.forEach(link => link.classList.remove('active'));
-            item.classList.add('active');
         });
     });
 
